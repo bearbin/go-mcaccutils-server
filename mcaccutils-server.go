@@ -8,7 +8,6 @@ import (
 	"github.com/zenazn/goji/web/middleware"
 	"math/rand"
 	"net/http"
-	"sync"
 	"time"
 )
 
@@ -24,9 +23,9 @@ func init() {
 	// Populate the configuration.
 	config.Populate()
 	// Initialise the database mappings.
-	dbmap = databaseInit()
+	dbmap = initDatabase()
 	// Initialise the cache.
-	dataCache = cache.New(1*time.Hour, 20*time.Second)
+	dataCache = cache.New(6*time.Hour, 20*time.Second)
 }
 
 func main() {

@@ -17,9 +17,9 @@ func initDatabase() *gorp.DbMap {
 	}
 	// Create a gorp mapping.
 	dbmap := &gorp.DbMap{Db: db, Dialect: gorp.SqliteDialect{}}
-	// Add tables to the mapping.
-	dbmap.AddTableWithName(Player{}, "players").SetKeys(false, "UUID").SetKeys(false, "LastKnownName")
-	dbmap.AddTableWithName(NameRecord{}, "names").SetKeys(true, "ID")
+	// Add tables to the mapping. TODO: Set unique data that is unique.
+	dbmap.AddTableWithName(Player{}, "players").SetKeys(false, "UUID")
+	dbmap.AddTableWithName(NameRecord{}, "names").SetKeys(false, "UUID", "Username")
 	dbmap.AddTableWithName(BanRecord{}, "bans").SetKeys(true, "ID")
 	// Create the tables if they don't exist already.
 	err = dbmap.CreateTablesIfNotExists()
