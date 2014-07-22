@@ -9,7 +9,6 @@ import (
 	"github.com/zenazn/goji/web"
 	"github.com/zenazn/goji/web/middleware"
 	"math/rand"
-	"net/http"
 	"time"
 )
 
@@ -41,14 +40,14 @@ func main() {
 	// Set up API middleware.
 	// TODO: Set up killing the people who don't want json.
 	api := web.New()
-	goji.Handle("/*", api)
+	goji.Handle("/by/*", api)
 	api.Use(PlainJSON)
 	st := store.NewMemStore(1000)
 	api.Use(throttled.RateLimit(throttled.PerHour(config.RateLimitHour), &throttled.VaryBy{Custom: CustomKeyGenerator}, st).Throttle)
-	api.Handle("/uuid/:uuid", ByUUID)
-	api.Handle("/name/:username", ByName)
+	api.Handle("/by/uuid/:uuid", ByUUID)
+	api.Handle("/by/name/:username", ByName)
 
-	goji.Get("/*", http.StripPrefix("/", http.FileServer(http.Dir("static/"))))
+	goji.Get("/", SingleHandler(config.IndexLocation))
 
 	// Serve using the magic of Goji!
 	goji.Serve()

@@ -35,3 +35,10 @@ func ParseIP(s string) string {
 func CustomKeyGenerator(r *http.Request) string {
 	return ParseIP(r.RemoteAddr)
 }
+
+func SingleHandler(path string) http.Handler {
+	fn := func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, path)
+	}
+	return http.HandlerFunc(fn)
+}
