@@ -8,3 +8,11 @@ It supports fetching account details by name or UUID, although fetching a player
 It also supports rate limiting by IP address.
 
 Data is stored in a SQLite database, and it is also cached in memory to reduce disk operations.
+
+For quick start:
+
+    go get github.com/bearbin/go-mcaccutils-server; $GOPATH/bin/go-mcaccutils-server 
+
+For available options:
+
+    go-mcaccutils-server -h
