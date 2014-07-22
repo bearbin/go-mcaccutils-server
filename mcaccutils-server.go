@@ -1,6 +1,8 @@
 package main
 
 import (
+	"github.com/PuerkitoBio/throttled"
+	"github.com/PuerkitoBio/throttled/store"
 	"github.com/coopernurse/gorp"
 	"github.com/pmylund/go-cache"
 	"github.com/zenazn/goji"
@@ -41,6 +43,8 @@ func main() {
 	api := web.New()
 	goji.Handle("/*", api)
 	api.Use(PlainJSON)
+	st := store.NewMemStore(1000)
+	api.Use(throttled.RateLimit(throttled.PerHour(config.RateLimitHour), &throttled.VaryBy{Custom: CustomKeyGenerator}, st).Throttle)
 	api.Handle("/uuid/:uuid", ByUUID)
 	api.Handle("/name/:username", ByName)
 
